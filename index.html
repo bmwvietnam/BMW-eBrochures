@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#111111" />
+  <title>The New BMW 7 | BMW Việt Nam</title>
+
+  <link rel="icon" href="https://www.bmw-motorcycles.vn/etc.clientlibs/mnm/mnmnsc/clientlibs/global/resources/images/favicon/favicon.ico" />
+  <link rel="icon" media="(prefers-color-scheme: dark)" href="https://www.bmw-motorcycles.vn/etc.clientlibs/mnm/mnmnsc/clientlibs/global/resources/images/favicon/favicon-dark-mode.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://www.bmw-motorcycles.vn/etc.clientlibs/mnm/mnmnsc/clientlibs/global/resources/images/common/apple-icon-180x180.png" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HNV8BGYG71"></script>
+
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="title" id="brochureTitle" aria-live="polite"></div>
+
+      <button
+        type="button"
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Mở danh sách E-Brochure"
+        aria-controls="brochureMenu"
+        aria-expanded="false">
+        <span class="hamburger" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+      </button>
+
+      <nav class="brochure-menu" id="brochureMenu" aria-label="Danh sách E-Brochure" inert>
+        <div class="menu-heading">Danh sách E-Brochure</div>
+        <div class="menu-list" id="brochureList"></div>
+      </nav>
+    </header>
+
+    <div class="menu-backdrop" id="menuBackdrop" aria-hidden="true"></div>
+
+    <main class="viewer">
+      <div class="loading" id="loading" role="status">Đang tải e-brochure…</div>
+      <iframe id="pdfFrame" title="BMW E-Brochure" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </main>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
