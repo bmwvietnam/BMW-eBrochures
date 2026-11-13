@@ -83,7 +83,8 @@ html, body {
 }
 
 .menu-toggle:focus-visible,
-.menu-item:focus-visible {
+.menu-item:focus-visible,
+.menu-heading:focus-visible {
   outline: 2px solid #fff;
   outline-offset: 3px;
 }
@@ -148,16 +149,54 @@ html, body {
   pointer-events: auto;
 }
 
+/* Accordion headings: tách riêng 2 nhóm brochure, thuận tiện trên điện thoại. */
+.menu-groups { display: grid; gap: 6px; }
+
+.menu-group { min-width: 0; }
+.menu-group + .menu-group { border-top: 1px solid #393939; padding-top: 6px; }
+
 .menu-heading {
-  padding: 6px 10px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: 12px 10px;
+  border-radius: 6px;
   font-size: 11px;
   font-weight: bold;
   color: #a9a9a9;
   letter-spacing: .08em;
+  line-height: 1.4;
   text-transform: uppercase;
+  cursor: pointer;
+  list-style: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .18s ease;
 }
+.menu-heading::-webkit-details-marker { display: none; }
+.menu-heading::marker { content: ""; }
+.menu-heading:hover { background: #292929; }
+.menu-heading::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  border-right: 2px solid #aaa;
+  border-bottom: 2px solid #aaa;
+  transform: rotate(-45deg);
+  transition: transform .2s ease;
+}
+.menu-group[open] > .menu-heading::after { transform: rotate(45deg); }
 
-.menu-list { display: grid; gap: 3px; }
+.menu-list { display: grid; gap: 3px; padding-bottom: 5px; }
+.menu-empty {
+  margin: 0;
+  padding: 9px 12px 15px;
+  color: #a9a9a9;
+  font-size: 13px;
+  line-height: 1.5;
+}
 
 .menu-item {
   display: flex;
@@ -170,7 +209,7 @@ html, body {
   color: #e8e8e8;
   text-decoration: none;
   font-size: 14px;
-  line-height: 1.4;
+  line-height: 1.8;
   transition: background .18s ease;
 }
 
@@ -233,7 +272,7 @@ iframe {
   .header { min-height: 54px; line-height: 2; }
   .title {
     font-size: 14px;
-    line-height: 1.4;
+    line-height: 1.8;
     white-space: normal;
     overflow-wrap: anywhere;
 
@@ -250,7 +289,7 @@ iframe {
 
 
 @media (prefers-reduced-motion: reduce) {
-  .menu-toggle, .hamburger span, .brochure-menu, .menu-backdrop, .menu-item {
+  .menu-toggle, .hamburger span, .brochure-menu, .menu-backdrop, .menu-item, .menu-heading, .menu-heading::after {
     transition-duration: .01ms;
   }
 }

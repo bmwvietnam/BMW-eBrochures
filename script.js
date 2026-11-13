@@ -1,6 +1,6 @@
-// THÊM E-BROCHURE TẠI ĐÂY: mỗi mẫu xe có id, label, title, driveUrl.
-    // id dùng trong URL (?brochure=bmw-7), label hiển thị trong menu.
-    const brochures = [
+// NHÓM 1: CÁC MẪU XE BMW.
+    // Mỗi brochure có id (dùng trong URL ?brochure=...), label, title và driveUrl.
+    const vehicleBrochures = [
       {
         id: "bmw-3",
         label: "BMW 3",
@@ -109,14 +109,33 @@
         title: "BMW M4 – CẢM GIÁC LÁI THUẦN CHẤT",
         driveUrl: "https://drive.google.com/file/d/1QUNVQ7OoKzSMnAcUTHT8YtkO8cWAkisT/view?usp=drivesdk"
       },
-      // Thêm các brochure khác vào đây, ví dụ:
-      // {
-      //   id: "bmw-x3",
-      //   label: "BMW X3",
-      //   title: "THE NEW BMW X3",
-      //   driveUrl: "https://drive.google.com/file/d/FILE_ID_CUA_X3/view"
-      // },
+      // Có thể thêm các mẫu xe khác vào mảng này.
     ];
+
+    // NHÓM 2: PHỤ TÙNG & PHỤ KIỆN.
+    // Thêm brochure thật vào đây khi có Google Drive URL (quyền xem công khai).
+    // Ví dụ, bỏ // và thay FILE_ID_THUC_TE bằng ID tài liệu của bạn:
+    // {
+    //   id: "bmw-phu-kien-chinh-hang",
+    //   label: "Phụ kiện chính hãng BMW",
+    //   title: "BMW – PHỤ KIỆN CHÍNH HÃNG",
+    //   driveUrl: "https://drive.google.com/file/d/FILE_ID_THUC_TE/view"
+    // },
+    const accessoryBrochures = [
+	{
+        id: "bmw-m2-m-performance-parts",
+        label: "BMW M2 – Phụ kiện M Performance Parts",
+        title: "BMW M2 – M PERFORMANCE PARTS",
+        driveUrl: "https://drive.google.com/file/d/1rI3Ag_lhmPCGG5TdGYacJ24VB4flIhEI/view?usp=drivesdk"
+      },
+    ];
+
+    // Tự động hiển thị theo từng nhóm; các URL brochure cũ vẫn hoạt động.
+    const brochureGroups = [
+      { id: "models", heading: "CÁC MẪU XE BMW", items: vehicleBrochures },
+      { id: "accessories", heading: "PHỤ TÙNG & PHỤ KIỆN", items: accessoryBrochures }
+    ];
+    const brochures = brochureGroups.flatMap(group => group.items);
 
     const title = document.getElementById("brochureTitle");
     const frame = document.getElementById("pdfFrame");
@@ -179,7 +198,6 @@
       document.title = `${brochure.title} | BMW Việt Nam`;
       frame.title = `${brochure.label} E-Brochure`;
       updateActiveMenuItem(id);
-
       const previewUrl = toDrivePreviewUrl(brochure.driveUrl);
       loading.classList.remove("hidden");
       if (!previewUrl) {
@@ -199,7 +217,7 @@
       menu.classList.toggle("is-open", open);
       backdrop.classList.toggle("is-open", open);
       menuToggle.setAttribute("aria-expanded", String(open));
-      menuToggle.setAttribute("aria-label", open ? "Đóng danh sách E-Brochure" : "Mở danh sách E-Brochure");
+      menuToggle.setAttribute("aria-label", open ? "Đóng menu chọn brochure" : "Mở menu chọn brochure");
       menu.inert = !open;
     }
 
@@ -214,23 +232,55 @@
       }
     });
 
-    // Tạo menu dựa trên danh sách brochures, không phải sửa HTML thủ công.
-    brochures.forEach(brochure => {
-      const link = document.createElement("a");
-      link.className = "menu-item";
-      link.href = getBrochureHref(brochure.id);
-      link.textContent = brochure.label;
-      link.dataset.brochureId = brochure.id;
-      link.addEventListener("click", event => {
-        // Vẫn hỗ trợ Ctrl/Cmd + click để mở brochure trong tab mới.
-        if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-        event.preventDefault();
-        loadBrochure(brochure.id);
-        updateBrochureUrl(brochure.id);
-        setMenuOpen(false);
-        menuToggle.focus();
+    // Hiển thị sẵn cả 2 tên nhóm; nhấn một tên nhóm để xem brochure bên dưới.
+    brochureGroups.forEach(group => {
+      const section = document.createElement("details");
+      section.className = "menu-group";
+      section.dataset.groupId = group.id;
+      // Mặc định thu gọn để luôn nhìn thấy cả 2 nhóm khi mở menu.
+      section.addEventListener("toggle", () => {
+        if (!section.open) return;
+        // Chỉ mở một nhóm tại một thời điểm, giúp chuyển nhóm nhanh trên mobile.
+        menuList.querySelectorAll(".menu-group").forEach(other => {
+          if (other !== section) other.open = false;
+        });
       });
-      menuList.appendChild(link);
+
+      const heading = document.createElement("summary");
+      heading.className = "menu-heading";
+      heading.textContent = group.heading;
+      section.appendChild(heading);
+
+      const list = document.createElement("div");
+      list.className = "menu-list";
+
+      if (!group.items.length) {
+        const emptyState = document.createElement("p");
+        emptyState.className = "menu-empty";
+        emptyState.textContent = "Brochure đang được cập nhật.";
+        list.appendChild(emptyState);
+      }
+
+      group.items.forEach(brochure => {
+        const link = document.createElement("a");
+        link.className = "menu-item";
+        link.href = getBrochureHref(brochure.id);
+        link.textContent = brochure.label;
+        link.dataset.brochureId = brochure.id;
+        link.addEventListener("click", event => {
+          // Vẫn hỗ trợ Ctrl/Cmd + click để mở brochure trong tab mới.
+          if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+          event.preventDefault();
+          loadBrochure(brochure.id);
+          updateBrochureUrl(brochure.id);
+          setMenuOpen(false);
+          menuToggle.focus();
+        });
+        list.appendChild(link);
+      });
+
+      section.appendChild(list);
+      menuList.appendChild(section);
     });
 
     frame.addEventListener("load", () => {
