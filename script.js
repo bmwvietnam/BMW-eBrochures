@@ -1,5 +1,3 @@
-// NHÓM 1: CÁC MẪU XE BMW.
-    // Mỗi brochure có id (dùng trong URL ?brochure=...), label, title và driveUrl.
     const vehicleBrochures = [
       {
         id: "bmw-3",
@@ -112,16 +110,7 @@
       // Có thể thêm các mẫu xe khác vào mảng này.
     ];
 
-    // NHÓM 2: PHỤ TÙNG & PHỤ KIỆN.
-    // Thêm brochure thật vào đây khi có Google Drive URL (quyền xem công khai).
-    // Ví dụ, bỏ // và thay FILE_ID_THUC_TE bằng ID tài liệu của bạn:
-    // {
-    //   id: "bmw-phu-kien-chinh-hang",
-    //   label: "Phụ kiện chính hãng BMW",
-    //   title: "BMW – PHỤ KIỆN CHÍNH HÃNG",
-    //   driveUrl: "https://drive.google.com/file/d/FILE_ID_THUC_TE/view"
-    // },
-    const accessoryBrochures = [
+const accessoryBrochures = [
 	{
         id: "bmw-m2-m-performance-parts",
         label: "BMW M2 – Phụ kiện M Performance Parts",
@@ -130,7 +119,6 @@
       },
     ];
 
-    // Tự động hiển thị theo từng nhóm; các URL brochure cũ vẫn hoạt động.
     const brochureGroups = [
       { id: "models", heading: "CÁC MẪU XE BMW", items: vehicleBrochures },
       { id: "accessories", heading: "PHỤ TÙNG & PHỤ KIỆN", items: accessoryBrochures }
@@ -232,15 +220,12 @@
       }
     });
 
-    // Hiển thị sẵn cả 2 tên nhóm; nhấn một tên nhóm để xem brochure bên dưới.
     brochureGroups.forEach(group => {
       const section = document.createElement("details");
       section.className = "menu-group";
       section.dataset.groupId = group.id;
-      // Mặc định thu gọn để luôn nhìn thấy cả 2 nhóm khi mở menu.
       section.addEventListener("toggle", () => {
         if (!section.open) return;
-        // Chỉ mở một nhóm tại một thời điểm, giúp chuyển nhóm nhanh trên mobile.
         menuList.querySelectorAll(".menu-group").forEach(other => {
           if (other !== section) other.open = false;
         });
@@ -268,7 +253,6 @@
         link.textContent = brochure.label;
         link.dataset.brochureId = brochure.id;
         link.addEventListener("click", event => {
-          // Vẫn hỗ trợ Ctrl/Cmd + click để mở brochure trong tab mới.
           if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
           event.preventDefault();
           loadBrochure(brochure.id);
