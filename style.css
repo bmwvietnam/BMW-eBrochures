@@ -59,7 +59,6 @@ html, body {
   line-height: 2;
 }
 
-/* Hamburger button: 3 lines smoothly transform into an X */
 .menu-toggle {
   flex: 0 0 42px;
   display: grid;
@@ -122,7 +121,6 @@ html, body {
   transform: translateY(-7px) rotate(-45deg);
 }
 
-/* Floating brochure list, opened beneath the header */
 .brochure-menu {
   position: absolute;
   top: 100%;
@@ -149,7 +147,6 @@ html, body {
   pointer-events: auto;
 }
 
-/* Accordion headings: tách riêng 2 nhóm brochure, thuận tiện trên điện thoại. */
 .menu-groups { display: grid; gap: 6px; }
 
 .menu-group { min-width: 0; }
