@@ -4,32 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#111111" />
-  <title>BMW e-Brochures | BMW Việt Nam</title>
-
+  <title>BMW Brochures | BMW Việt Nam</title>
   <link rel="icon" href="https://www.bmw-motorcycles.vn/etc.clientlibs/mnm/mnmnsc/clientlibs/global/resources/images/favicon/favicon.ico" />
   <link rel="icon" media="(prefers-color-scheme: dark)" href="https://www.bmw-motorcycles.vn/etc.clientlibs/mnm/mnmnsc/clientlibs/global/resources/images/favicon/favicon-dark-mode.ico" />
   <link rel="apple-touch-icon" sizes="180x180" href="https://www.bmw-motorcycles.vn/etc.clientlibs/mnm/mnmnsc/clientlibs/global/resources/images/common/apple-icon-180x180.png" />
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-HNV8BGYG71"></script>
-
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
   <div class="app">
     <header class="header">
       <div class="title" id="brochureTitle" aria-live="polite"></div>
-
-      <button
-        type="button"
-        class="menu-toggle"
-        id="menuToggle"
-        aria-label="Mở menu chọn brochure"
-        aria-controls="brochureMenu"
-        aria-expanded="false">
-        <span class="hamburger" aria-hidden="true">
-          <span></span><span></span><span></span>
-        </span>
+      <button type="button" class="menu-toggle" id="menuToggle"
+        aria-label="Mở menu chọn brochure" aria-controls="brochureMenu" aria-expanded="false">
+        <span class="hamburger" aria-hidden="true"><span></span><span></span><span></span></span>
       </button>
-
       <nav class="brochure-menu" id="brochureMenu" aria-label="Chọn brochure BMW" inert>
         <div class="menu-groups" id="brochureList"></div>
       </nav>
@@ -38,11 +27,40 @@
     <div class="menu-backdrop" id="menuBackdrop" aria-hidden="true"></div>
 
     <main class="viewer">
-      <div class="loading" id="loading" role="status">Đang tải e-brochure…</div>
-      <iframe id="pdfFrame" title="BMW E-Brochure" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="native-viewer" id="nativeViewer" hidden></div>
+      <div class="pdf-scroll" id="pdfScroll" hidden role="region" aria-label="Nội dung e-brochure" tabindex="0">
+        <div class="pdf-pages" id="pdfPages"></div>
+      </div>
+      <div class="loading" id="loading" role="status" aria-live="polite">
+        <div class="loading-content">
+          <p id="loadingText">Đang tải e-brochure…</p>
+          <button id="retryButton" type="button" class="retry-button" hidden>Thử lại</button>
+        </div>
+      </div>
     </main>
-  </div>
 
-  <script src="./script.js"></script>
+    <footer class="viewer-toolbar" aria-label="Công cụ đọc PDF">
+      <div class="viewer-nav" id="viewerNav" hidden role="group" aria-label="Chuyển trang">
+        <button type="button" id="prevPage" class="toolbar-button" title="Trang trước" aria-label="Trang trước" disabled>‹</button>
+        <span id="pageCounter" class="page-counter" aria-live="polite">0 / 0</span>
+        <button type="button" id="nextPage" class="toolbar-button" title="Trang tiếp theo" aria-label="Trang tiếp theo" disabled>›</button>
+      </div>
+      <div class="viewer-zoom" id="viewerZoom" hidden role="group" aria-label="Thu phóng">
+        <button type="button" id="zoomOut" class="toolbar-button" aria-label="Thu nhỏ" title="Thu nhỏ" disabled>−</button>
+        <button type="button" id="fitWidth" class="toolbar-button zoom-label" title="Vừa chiều ngang" disabled>100%</button>
+        <button type="button" id="zoomIn" class="toolbar-button" aria-label="Phóng to" title="Phóng to" disabled>+</button>
+      </div>
+      <div class="viewer-test" id="viewerTest" hidden role="group" aria-label="Kiểm thử trình xem PDF">
+        <span class="viewer-test-label">Test:</span>
+        <button type="button" id="testNative" class="viewer-mode-button" aria-pressed="false">Native PDF</button>
+        <button type="button" id="testPdfjs" class="viewer-mode-button" aria-pressed="false">PDF.js</button>
+      </div>
+      <div class="viewer-actions">
+        <a id="openPdf" class="action-link is-disabled" aria-disabled="true" target="_blank" rel="noopener noreferrer">Xem PDF ↗</a>
+        <a id="downloadPdf" class="action-link is-disabled" aria-disabled="true">Tải brochure ↓</a>
+      </div>
+    </footer>
+  </div>
+  <script type="module" src="./script.js"></script>
 </body>
 </html>
